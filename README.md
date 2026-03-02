@@ -11,6 +11,6 @@ The calibration used >5,000 stations globally.
 
 ## About the Map
 
-- **Metric**: modKGE (modified Kling-Gupta Efficiency)  
+- **Metric**: JSD-KGE (modified Kling-Gupta Efficiency with Jensen–Shannon Divergence, see details [here](https://egusphere.copernicus.org/preprints/2026/egusphere-2026-43/))
 - **Scope**: Global GloFASv5 model  
 - **Purpose**: Visualizes model performance after calibration
