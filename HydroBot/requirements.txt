@@ -1,0 +1,5 @@
+discord.py
+pandas
+requests
+python-dotenv
+openai>=1.0.0
