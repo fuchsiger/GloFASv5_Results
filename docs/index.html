@@ -15,10 +15,6 @@
     --accent2: #06b6d4;
     --text: #e2e8f0;
     --muted: #64748b;
-    --green: #22c55e;
-    --yellow: #eab308;
-    --orange: #f97316;
-    --red: #ef4444;
     --excellent: #22c55e;
     --good: #84cc16;
     --fair: #eab308;
@@ -36,7 +32,6 @@
     min-height: 100vh;
   }
 
-  /* ── Header ── */
   header {
     padding: 28px 32px 20px;
     border-bottom: 1px solid var(--border);
@@ -56,23 +51,11 @@
   .header-title h1 span { color: var(--accent2); }
   .header-title p { color: var(--muted); font-size: 12px; margin-top: 4px; }
 
-  .stats-row {
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-  .stat {
-    text-align: right;
-  }
-  .stat-val {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 20px;
-    font-weight: 600;
-    color: #fff;
-  }
+  .stats-row { display: flex; gap: 24px; flex-wrap: wrap; }
+  .stat { text-align: right; }
+  .stat-val { font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 600; color: #fff; }
   .stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
-  /* ── Controls ── */
   .controls {
     padding: 14px 32px;
     display: flex;
@@ -83,19 +66,8 @@
     background: var(--surface);
   }
 
-  .search-wrap {
-    position: relative;
-    flex: 1;
-    min-width: 200px;
-    max-width: 340px;
-  }
-  .search-wrap svg {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0.4;
-  }
+  .search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 340px; }
+  .search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0.4; }
   input[type="text"] {
     width: 100%;
     background: var(--bg);
@@ -121,27 +93,13 @@
     font-size: 12px;
     outline: none;
     cursor: pointer;
-    transition: border-color 0.15s;
   }
   select:focus { border-color: var(--accent); }
 
-  .filter-label {
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-  }
-
-  .count-badge {
-    margin-left: auto;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-  }
+  .filter-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+  .count-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
   .count-badge span { color: var(--text); }
 
-  /* ── KGE legend ── */
   .legend {
     padding: 8px 32px;
     display: flex;
@@ -154,25 +112,11 @@
   .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
   .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
-  /* ── Table wrapper ── */
-  .table-wrap {
-    overflow-x: auto;
-    overflow-y: auto;
-    max-height: calc(100vh - 220px);
-  }
+  .table-wrap { overflow-x: auto; overflow-y: auto; max-height: calc(100vh - 230px); }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-  }
+  table { width: 100%; border-collapse: collapse; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
 
-  thead {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
+  thead { position: sticky; top: 0; z-index: 10; }
   thead th {
     background: var(--surface);
     color: var(--muted);
@@ -186,30 +130,21 @@
     white-space: nowrap;
     cursor: pointer;
     user-select: none;
-    transition: color 0.15s;
   }
   thead th:hover { color: var(--text); }
   thead th.sorted { color: var(--accent2); }
   thead th .sort-icon { margin-left: 4px; opacity: 0.5; }
   thead th.sorted .sort-icon { opacity: 1; }
 
-  tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.1s;
-  }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
   tbody tr:hover { background: rgba(59,130,246,0.05); }
 
-  td {
-    padding: 9px 14px;
-    vertical-align: middle;
-    white-space: nowrap;
-  }
+  td { padding: 9px 14px; vertical-align: middle; white-space: nowrap; }
 
-  .station-name { font-weight: 500; color: var(--text); max-width: 180px; overflow: hidden; text-overflow: ellipsis; }
-  .station-id { color: var(--muted); font-size: 11px; }
-  .coord { color: var(--muted); font-size: 11px; }
+  .station-name { font-weight: 500; color: var(--text); max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
+  .cell-muted { color: var(--muted); font-size: 11px; }
+  .cell-basin { color: var(--accent2); font-size: 11px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
 
-  /* ── KGE chip ── */
   .kge-chip {
     display: inline-flex;
     align-items: center;
@@ -219,40 +154,23 @@
     font-size: 12px;
     font-weight: 500;
   }
-  .kge-chip.excellent { background: rgba(34,197,94,0.12); color: var(--excellent); }
+  .kge-chip.excellent { background: rgba(34,197,94,0.12);  color: var(--excellent); }
   .kge-chip.good      { background: rgba(132,204,22,0.12); color: var(--good); }
   .kge-chip.fair      { background: rgba(234,179,8,0.12);  color: var(--fair); }
   .kge-chip.poor      { background: rgba(249,115,22,0.12); color: var(--poor); }
   .kge-chip.bad       { background: rgba(239,68,68,0.12);  color: var(--bad); }
 
-  /* ── Sparkline ── */
   .sparkline-cell { width: 120px; min-width: 120px; }
   canvas.spark { display: block; }
 
-  /* ── Loading / empty ── */
-  .status-msg {
-    padding: 60px 32px;
-    text-align: center;
-    color: var(--muted);
-    font-family: 'IBM Plex Mono', monospace;
-  }
+  .status-msg { padding: 60px 32px; text-align: center; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
   .status-msg .loader {
-    display: inline-block;
-    width: 24px; height: 24px;
-    border: 2px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin-bottom: 12px;
+    display: inline-block; width: 24px; height: 24px;
+    border: 2px solid var(--border); border-top-color: var(--accent);
+    border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 12px;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  .error-msg { color: var(--red); }
-
-  /* ── Responsive ── */
-  @media (max-width: 600px) {
-    header, .controls, .legend { padding-left: 16px; padding-right: 16px; }
-  }
+  .error-msg { color: var(--bad); }
 </style>
 </head>
 <body>
@@ -260,10 +178,11 @@
 <header>
   <div class="header-title">
     <h1>GloFAS<span>v5</span> · Calibration Results</h1>
-    <p>Kling-Gupta Efficiency (modKGE / JSD-KGE) · Global station overview</p>
+    <p>modKGE (JSD-KGE) · Global station performance overview</p>
   </div>
   <div class="stats-row" id="statsRow">
-    <div class="stat"><div class="stat-val" id="statTotal">—</div><div class="stat-lbl">Stations</div></div>
+    <div class="stat"><div class="stat-val" id="statTotal">—</div><div class="stat-lbl">Total Stations</div></div>
+    <div class="stat"><div class="stat-val" id="statCalib">—</div><div class="stat-lbl">Calibrated</div></div>
     <div class="stat"><div class="stat-val" id="statExcellent">—</div><div class="stat-lbl">KGE ≥ 0.75</div></div>
     <div class="stat"><div class="stat-val" id="statGood">—</div><div class="stat-lbl">KGE 0.5–0.75</div></div>
     <div class="stat"><div class="stat-val" id="statPoor">—</div><div class="stat-lbl">KGE &lt; 0.5</div></div>
@@ -273,9 +192,8 @@
 <div class="controls">
   <div class="search-wrap">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="text" id="searchInput" placeholder="Search station, river, country…">
+    <input type="text" id="searchInput" placeholder="Search station, basin, country…">
   </div>
-
   <span class="filter-label">KGE Filter</span>
   <select id="kgeFilter">
     <option value="all">All</option>
@@ -285,7 +203,6 @@
     <option value="poor">Poor (0 – 0.25)</option>
     <option value="bad">Bad (&lt; 0)</option>
   </select>
-
   <span class="filter-label">Sort by</span>
   <select id="sortSelect">
     <option value="kge_desc">KGE ↓</option>
@@ -293,7 +210,6 @@
     <option value="name_asc">Name A–Z</option>
     <option value="country_asc">Country</option>
   </select>
-
   <div class="count-badge">Showing <span id="shownCount">—</span> / <span id="totalCount">—</span></div>
 </div>
 
@@ -317,7 +233,7 @@
 </div>
 
 <script>
-const CSV_URL = 'https://raw.githubusercontent.com/fuchsiger/GloFASv5_Results/main/GloFASv5_Calibration_Results_updated.csv';
+const CSV_URL = 'https://raw.githubusercontent.com/fuchsiger/GloFASv5_Results/refs/heads/main/GloFASv5_Calibration_Results_updated.csv';
 const PAGE_SIZE = 200;
 
 let allRows = [];
@@ -325,15 +241,13 @@ let filtered = [];
 let sortKey = 'kge_desc';
 let currentPage = 0;
 let loading = false;
-let kgeCol = null;   // detected column index
-let nameCol = null;
-let idCol = null;
-let countryCol = null;
-let latCol = null;
-let lonCol = null;
+
+// Column indices
+let kgeCol = -1, nameCol = -1, idCol = -1, countryCol = -1;
+let latCol = -1, lonCol = -1, basinCol = -1;
 let headers = [];
 
-// ── CSV parser (handles quoted fields) ──────────────────────────────
+// ── CSV parser ───────────────────────────────────────────────────────
 function parseCSV(text) {
   const lines = text.split('\n');
   const result = [];
@@ -354,21 +268,31 @@ function parseCSV(text) {
   return result;
 }
 
-// ── Detect columns by fuzzy name matching ───────────────────────────
+// ── Column detection ─────────────────────────────────────────────────
 function detectCols(hdrs) {
-  const find = (patterns) => {
+  const exact = (name) => hdrs.findIndex(h => h === name);
+  const fuzzy = (patterns) => {
     for (const p of patterns) {
       const idx = hdrs.findIndex(h => h.toLowerCase().includes(p));
       if (idx >= 0) return idx;
     }
     return -1;
   };
-  kgeCol     = find(['kge', 'modkge', 'jsd']);
-  nameCol    = find(['station_name', 'name', 'stname', 'river']);
-  idCol      = find(['id', 'grdc', 'station_id', 'gsim']);
-  countryCol = find(['country', 'nation', 'cntry']);
-  latCol     = find(['lat']);
-  lonCol     = find(['lon']);
+  kgeCol     = exact('modKGE_v5');
+  nameCol    = exact('name');
+  idCol      = exact('efas');
+  countryCol = exact('iso');
+  latCol     = exact('lat_x');
+  lonCol     = exact('long');
+  basinCol   = exact('basin');
+
+  if (kgeCol < 0)     kgeCol     = fuzzy(['modkge', 'kge']);
+  if (nameCol < 0)    nameCol    = fuzzy(['name', 'station']);
+  if (idCol < 0)      idCol      = fuzzy(['efas', 'id']);
+  if (countryCol < 0) countryCol = fuzzy(['iso', 'country']);
+  if (latCol < 0)     latCol     = fuzzy(['lat_x', 'lat']);
+  if (lonCol < 0)     lonCol     = fuzzy(['long', 'lon']);
+  if (basinCol < 0)   basinCol   = fuzzy(['basin']);
 }
 
 // ── KGE classification ───────────────────────────────────────────────
@@ -381,72 +305,52 @@ function kgeClass(v) {
   return 'bad';
 }
 
-// ── Draw mini sparkline (KGE bar style) ─────────────────────────────
+// ── Sparkline ────────────────────────────────────────────────────────
 function drawSparkline(canvas, kgeVal) {
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
   ctx.clearRect(0, 0, W, H);
-
-  // Background track
   ctx.fillStyle = '#1e2535';
-  ctx.beginPath();
-  ctx.roundRect(0, H/2 - 3, W, 6, 3);
-  ctx.fill();
-
+  ctx.beginPath(); ctx.roundRect(0, H/2 - 3, W, 6, 3); ctx.fill();
   if (kgeVal === null || isNaN(kgeVal)) return;
-
-  // Map KGE [-1, 1] → [0, W]
   const clipped = Math.max(-1, Math.min(1, kgeVal));
-  const zeroX = W * 0.5;  // KGE=0 is center
+  const zeroX = W * 0.5;
   const valX  = W * (clipped + 1) / 2;
-
-  const cls = kgeClass(kgeVal);
   const colors = { excellent: '#22c55e', good: '#84cc16', fair: '#eab308', poor: '#f97316', bad: '#ef4444' };
-  ctx.fillStyle = colors[cls];
-
-  const x1 = Math.min(zeroX, valX);
-  const x2 = Math.max(zeroX, valX);
-  ctx.beginPath();
-  ctx.roundRect(x1, H/2 - 3, Math.max(x2 - x1, 2), 6, 2);
-  ctx.fill();
-
-  // Zero tick
+  ctx.fillStyle = colors[kgeClass(kgeVal)];
+  const x1 = Math.min(zeroX, valX), x2 = Math.max(zeroX, valX);
+  ctx.beginPath(); ctx.roundRect(x1, H/2 - 3, Math.max(x2 - x1, 2), 6, 2); ctx.fill();
   ctx.fillStyle = '#334155';
   ctx.fillRect(zeroX - 0.5, H/2 - 6, 1, 12);
-
-  // Value dot
-  ctx.fillStyle = colors[cls];
-  ctx.beginPath();
-  ctx.arc(valX, H/2, 4, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.fillStyle = colors[kgeClass(kgeVal)];
+  ctx.beginPath(); ctx.arc(valX, H/2, 4, 0, Math.PI * 2); ctx.fill();
 }
 
-// ── Build table header ───────────────────────────────────────────────
+// ── Table header ─────────────────────────────────────────────────────
 function buildHeader() {
   const thead = document.getElementById('tableHead');
   const cols = [
-    { label: '#', key: null },
-    { label: 'Station', key: 'name' },
-    { label: 'ID', key: 'id' },
-    { label: 'Country', key: 'country' },
-    { label: 'Lat', key: null },
-    { label: 'Lon', key: null },
-    { label: 'modKGE', key: 'kge' },
-    { label: 'Performance', key: null },
+    { label: '#',          key: null },
+    { label: 'EFAS ID',    key: 'id' },
+    { label: 'Station',    key: 'name' },
+    { label: 'Basin',      key: null },
+    { label: 'ISO',        key: 'country' },
+    { label: 'Lat',        key: null },
+    { label: 'Lon',        key: null },
+    { label: 'modKGE v5',  key: 'kge' },
+    { label: 'Performance',key: null },
   ];
   const tr = document.createElement('tr');
   cols.forEach(c => {
     const th = document.createElement('th');
-    th.textContent = c.label;
     if (c.key) {
-      th.classList.add('sortable');
       th.innerHTML = `${c.label} <span class="sort-icon">↕</span>`;
       th.addEventListener('click', () => {
-        if (sortKey === `${c.key}_desc`) sortKey = `${c.key}_asc`;
-        else sortKey = `${c.key}_desc`;
-        document.getElementById('sortSelect').value = sortKey.includes('kge') ? sortKey : sortKey;
+        sortKey = (sortKey === `${c.key}_desc`) ? `${c.key}_asc` : `${c.key}_desc`;
         applyFilters();
       });
+    } else {
+      th.textContent = c.label;
     }
     tr.appendChild(th);
   });
@@ -457,56 +361,35 @@ function buildHeader() {
 function renderRows(rows, append = false) {
   const tbody = document.getElementById('tableBody');
   if (!append) tbody.innerHTML = '';
-
   const frag = document.createDocumentFragment();
 
   rows.forEach((row, i) => {
-    const kgeVal = kgeCol >= 0 ? parseFloat(row[kgeCol]) : NaN;
-    const cls = kgeClass(kgeVal);
-    const name = nameCol >= 0 ? row[nameCol] : '—';
-    const id   = idCol >= 0   ? row[idCol]   : '—';
-    const cntry = countryCol >= 0 ? row[countryCol] : '—';
-    const lat  = latCol >= 0  ? parseFloat(row[latCol]).toFixed(3)  : '—';
-    const lon  = lonCol >= 0  ? parseFloat(row[lonCol]).toFixed(3) : '—';
+    const kgeVal  = kgeCol >= 0     ? parseFloat(row[kgeCol])  : NaN;
+    const cls     = kgeClass(kgeVal);
+    const name    = nameCol >= 0    ? row[nameCol]   : '—';
+    const id      = idCol >= 0      ? row[idCol]     : '—';
+    const country = countryCol >= 0 ? row[countryCol]: '—';
+    const basin   = basinCol >= 0   ? row[basinCol]  : '—';
+    const lat     = latCol >= 0     ? parseFloat(row[latCol])  : NaN;
+    const lon     = lonCol >= 0     ? parseFloat(row[lonCol])  : NaN;
 
     const tr = document.createElement('tr');
+    const cell = (text, className) => {
+      const td = document.createElement('td');
+      td.className = className || '';
+      td.textContent = text;
+      td.title = text;
+      tr.appendChild(td);
+      return td;
+    };
 
-    // Index
-    const tdIdx = document.createElement('td');
-    tdIdx.className = 'station-id';
-    tdIdx.textContent = (currentPage * PAGE_SIZE + i + 1).toString().padStart(4, '0');
-    tr.appendChild(tdIdx);
-
-    // Name
-    const tdName = document.createElement('td');
-    tdName.className = 'station-name';
-    tdName.title = name;
-    tdName.textContent = name;
-    tr.appendChild(tdName);
-
-    // ID
-    const tdId = document.createElement('td');
-    tdId.className = 'station-id';
-    tdId.textContent = id;
-    tr.appendChild(tdId);
-
-    // Country
-    const tdCntry = document.createElement('td');
-    tdCntry.className = 'station-id';
-    tdCntry.textContent = cntry;
-    tr.appendChild(tdCntry);
-
-    // Lat
-    const tdLat = document.createElement('td');
-    tdLat.className = 'coord';
-    tdLat.textContent = lat;
-    tr.appendChild(tdLat);
-
-    // Lon
-    const tdLon = document.createElement('td');
-    tdLon.className = 'coord';
-    tdLon.textContent = lon;
-    tr.appendChild(tdLon);
+    cell((currentPage * PAGE_SIZE + i + 1).toString().padStart(4,'0'), 'cell-muted');
+    cell(id,     'cell-muted');
+    cell(name,   'station-name');
+    cell(basin,  'cell-basin');
+    cell(country,'cell-muted');
+    cell(isNaN(lat) ? '—' : lat.toFixed(3), 'cell-muted');
+    cell(isNaN(lon) ? '—' : lon.toFixed(3), 'cell-muted');
 
     // KGE chip
     const tdKge = document.createElement('td');
@@ -522,55 +405,46 @@ function renderRows(rows, append = false) {
     tdSpark.appendChild(canvas);
     tr.appendChild(tdSpark);
     frag.appendChild(tr);
-
-    // Draw after append
     requestAnimationFrame(() => drawSparkline(canvas, kgeVal));
   });
 
   tbody.appendChild(frag);
 }
 
-// ── Sort & filter ────────────────────────────────────────────────────
+// ── Filter + Sort ────────────────────────────────────────────────────
 function applyFilters() {
-  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const q    = document.getElementById('searchInput').value.toLowerCase().trim();
   const kgeF = document.getElementById('kgeFilter').value;
-  const sort = document.getElementById('sortSelect').value;
-  sortKey = sort;
+  sortKey    = document.getElementById('sortSelect').value;
 
   filtered = allRows.filter(row => {
-    // Search
-    if (q) {
-      const haystack = row.join(' ').toLowerCase();
-      if (!haystack.includes(q)) return false;
-    }
-    // KGE filter
+    if (q && !row.join(' ').toLowerCase().includes(q)) return false;
     if (kgeF !== 'all') {
-      const kgeVal = kgeCol >= 0 ? parseFloat(row[kgeCol]) : NaN;
-      if (kgeClass(kgeVal) !== kgeF) return false;
+      const v = kgeCol >= 0 ? parseFloat(row[kgeCol]) : NaN;
+      if (kgeClass(v) !== kgeF) return false;
     }
     return true;
   });
 
-  // Sort
   filtered.sort((a, b) => {
     const av = kgeCol >= 0 ? parseFloat(a[kgeCol]) : NaN;
     const bv = kgeCol >= 0 ? parseFloat(b[kgeCol]) : NaN;
-    const an = nameCol >= 0 ? a[nameCol] : '';
-    const bn = nameCol >= 0 ? b[nameCol] : '';
+    const an = nameCol >= 0    ? a[nameCol]    : '';
+    const bn = nameCol >= 0    ? b[nameCol]    : '';
     const ac = countryCol >= 0 ? a[countryCol] : '';
     const bc = countryCol >= 0 ? b[countryCol] : '';
-    switch (sort) {
-      case 'kge_desc': return (isNaN(bv) ? -Infinity : bv) - (isNaN(av) ? -Infinity : av);
-      case 'kge_asc':  return (isNaN(av) ? Infinity : av) - (isNaN(bv) ? Infinity : bv);
-      case 'name_asc': return an.localeCompare(bn);
-      case 'country_asc': return ac.localeCompare(bc);
+    switch (sortKey) {
+      case 'kge_desc':     return (isNaN(bv) ? -Infinity : bv) - (isNaN(av) ? -Infinity : av);
+      case 'kge_asc':      return (isNaN(av) ?  Infinity : av) - (isNaN(bv) ?  Infinity : bv);
+      case 'name_asc':     return an.localeCompare(bn);
+      case 'country_asc':  return ac.localeCompare(bc);
       default: return 0;
     }
   });
 
   currentPage = 0;
   document.getElementById('shownCount').textContent = Math.min(PAGE_SIZE, filtered.length);
-  document.getElementById('totalCount').textContent = filtered.length;
+  document.getElementById('totalCount').textContent  = filtered.length;
   renderRows(filtered.slice(0, PAGE_SIZE));
   setupInfiniteScroll();
 }
@@ -578,24 +452,21 @@ function applyFilters() {
 // ── Infinite scroll ──────────────────────────────────────────────────
 function setupInfiniteScroll() {
   const wrap = document.getElementById('tableWrap');
-  wrap.onscroll = null;
   wrap.onscroll = () => {
     if (loading) return;
-    const bottom = wrap.scrollHeight - wrap.scrollTop - wrap.clientHeight;
-    if (bottom < 200) {
+    if (wrap.scrollHeight - wrap.scrollTop - wrap.clientHeight < 200) {
       const nextStart = (currentPage + 1) * PAGE_SIZE;
       if (nextStart >= filtered.length) return;
       loading = true;
       currentPage++;
-      const slice = filtered.slice(nextStart, nextStart + PAGE_SIZE);
-      renderRows(slice, true);
+      renderRows(filtered.slice(nextStart, nextStart + PAGE_SIZE), true);
       document.getElementById('shownCount').textContent = Math.min((currentPage + 1) * PAGE_SIZE, filtered.length);
       loading = false;
     }
   };
 }
 
-// ── Update summary stats ─────────────────────────────────────────────
+// ── Summary stats ────────────────────────────────────────────────────
 function updateStats(rows) {
   let excellent = 0, good = 0, poor = 0;
   rows.forEach(r => {
@@ -606,16 +477,22 @@ function updateStats(rows) {
     else poor++;
   });
   document.getElementById('statTotal').textContent = rows.length.toLocaleString();
+  document.getElementById('statCalib').textContent = (excellent + good + poor).toLocaleString();
   document.getElementById('statExcellent').textContent = excellent.toLocaleString();
-  document.getElementById('statGood').textContent = good.toLocaleString();
-  document.getElementById('statPoor').textContent = poor.toLocaleString();
+  document.getElementById('statGood').textContent      = good.toLocaleString();
+  document.getElementById('statPoor').textContent      = poor.toLocaleString();
 }
 
-// ── Main load ────────────────────────────────────────────────────────
+function debounce(fn, ms) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+// ── Main ─────────────────────────────────────────────────────────────
 async function loadData() {
   try {
     const res = await fetch(CSV_URL);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status} – ${res.statusText}`);
     const text = await res.text();
     const rows = parseCSV(text);
     if (rows.length < 2) throw new Error('CSV appears empty');
@@ -632,7 +509,6 @@ async function loadData() {
 
     applyFilters();
 
-    // Wire up controls
     document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 200));
     document.getElementById('kgeFilter').addEventListener('change', applyFilters);
     document.getElementById('sortSelect').addEventListener('change', applyFilters);
@@ -640,13 +516,8 @@ async function loadData() {
   } catch (err) {
     document.getElementById('statusMsg').innerHTML =
       `<span class="error-msg">⚠ Could not load CSV<br><small>${err.message}</small><br><br>` +
-      `<small>Make sure the repository is public and CORS is allowed via raw.githubusercontent.com</small></span>`;
+      `<small>URL: ${CSV_URL}</small></span>`;
   }
-}
-
-function debounce(fn, ms) {
-  let t;
-  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
 }
 
 loadData();
