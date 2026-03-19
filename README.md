@@ -2,6 +2,7 @@
 
 This repository contains the calibration results for GloFASv5.  
 
+An interactive page to browse through the results can be found [here](https://fuchsiger.github.io/GloFASv5_Results/).
 The main map below shows the **global performance of the model** using the `modKGE` metric.
 The calibration used >5,000 stations globally.
 
