@@ -233,7 +233,7 @@
 </div>
 
 <script>
-const CSV_URL = 'https://raw.githubusercontent.com/fuchsiger/GloFASv5_Results/refs/heads/main/GloFASv5_Calibration_Results_updated.csv';
+const CSV_URL = 'https://raw.githubusercontent.com/fuchsiger/GloFASv5_Results/refs/heads/main/GloFASv5_stations_metadata_calfunction_KGE_JSD_20March2026_final.csv';
 const PAGE_SIZE = 200;
 
 let allRows = [];
@@ -244,26 +244,32 @@ let loading = false;
 
 // Column indices
 let kgeCol = -1, nameCol = -1, idCol = -1, countryCol = -1;
-let latCol = -1, lonCol = -1, basinCol = -1;
+let latCol = -1, lonCol = -1, basinCol = -1, regionCol = -1, calibCol = -1;
 let headers = [];
 
-// ── CSV parser ───────────────────────────────────────────────────────
+// ── CSV/TSV parser (auto-detects delimiter) ──────────────────────────
 function parseCSV(text) {
   const lines = text.split('\n');
+  if (!lines.length) return [];
+  const delim = lines[0].includes('\t') ? '\t' : ',';
   const result = [];
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
     if (!line) continue;
-    const row = [];
-    let inQ = false, cur = '';
-    for (let j = 0; j < line.length; j++) {
-      const c = line[j];
-      if (c === '"') { inQ = !inQ; continue; }
-      if (c === ',' && !inQ) { row.push(cur.trim()); cur = ''; continue; }
-      cur += c;
+    if (delim === '\t') {
+      result.push(line.split('\t').map(s => s.trim()));
+    } else {
+      const row = [];
+      let inQ = false, cur = '';
+      for (let j = 0; j < line.length; j++) {
+        const c = line[j];
+        if (c === '"') { inQ = !inQ; continue; }
+        if (c === ',' && !inQ) { row.push(cur.trim()); cur = ''; continue; }
+        cur += c;
+      }
+      row.push(cur.trim());
+      result.push(row);
     }
-    row.push(cur.trim());
-    result.push(row);
   }
   return result;
 }
@@ -278,21 +284,25 @@ function detectCols(hdrs) {
     }
     return -1;
   };
-  kgeCol     = exact('modKGE_v5');
+  kgeCol     = exact('KGEmod');
   nameCol    = exact('name');
-  idCol      = exact('efas');
+  idCol      = exact('ID');
   countryCol = exact('iso');
-  latCol     = exact('lat_x');
+  latCol     = exact('lat');
   lonCol     = exact('long');
   basinCol   = exact('basin');
+  regionCol  = exact('Region');
+  calibCol   = exact('GlofasV5');
 
-  if (kgeCol < 0)     kgeCol     = fuzzy(['modkge', 'kge']);
+  if (kgeCol < 0)     kgeCol     = fuzzy(['kgemod', 'kge']);
   if (nameCol < 0)    nameCol    = fuzzy(['name', 'station']);
-  if (idCol < 0)      idCol      = fuzzy(['efas', 'id']);
+  if (idCol < 0)      idCol      = fuzzy(['id']);
   if (countryCol < 0) countryCol = fuzzy(['iso', 'country']);
-  if (latCol < 0)     latCol     = fuzzy(['lat_x', 'lat']);
+  if (latCol < 0)     latCol     = fuzzy(['lat']);
   if (lonCol < 0)     lonCol     = fuzzy(['long', 'lon']);
   if (basinCol < 0)   basinCol   = fuzzy(['basin']);
+  if (regionCol < 0)  regionCol  = fuzzy(['region']);
+  if (calibCol < 0)   calibCol   = fuzzy(['glofasv5', 'glofas']);
 }
 
 // ── KGE classification ───────────────────────────────────────────────
@@ -330,15 +340,17 @@ function drawSparkline(canvas, kgeVal) {
 function buildHeader() {
   const thead = document.getElementById('tableHead');
   const cols = [
-    { label: '#',          key: null },
-    { label: 'EFAS ID',    key: 'id' },
-    { label: 'Station',    key: 'name' },
-    { label: 'Basin',      key: null },
-    { label: 'ISO',        key: 'country' },
-    { label: 'Lat',        key: null },
-    { label: 'Lon',        key: null },
-    { label: 'modKGE v5',  key: 'kge' },
-    { label: 'Performance',key: null },
+    { label: '#',           key: null },
+    { label: 'ID',          key: 'id' },
+    { label: 'Station',     key: 'name' },
+    { label: 'Basin',       key: null },
+    { label: 'Region',      key: null },
+    { label: 'ISO',         key: 'country' },
+    { label: 'Lat',         key: null },
+    { label: 'Lon',         key: null },
+    { label: 'Status',      key: null },
+    { label: 'KGEmod',      key: 'kge' },
+    { label: 'Performance', key: null },
   ];
   const tr = document.createElement('tr');
   cols.forEach(c => {
@@ -364,14 +376,17 @@ function renderRows(rows, append = false) {
   const frag = document.createDocumentFragment();
 
   rows.forEach((row, i) => {
-    const kgeVal  = kgeCol >= 0     ? parseFloat(row[kgeCol])  : NaN;
+    const kgeVal  = kgeCol >= 0     ? parseFloat(row[kgeCol])   : NaN;
     const cls     = kgeClass(kgeVal);
-    const name    = nameCol >= 0    ? row[nameCol]   : '—';
-    const id      = idCol >= 0      ? row[idCol]     : '—';
-    const country = countryCol >= 0 ? row[countryCol]: '—';
-    const basin   = basinCol >= 0   ? row[basinCol]  : '—';
-    const lat     = latCol >= 0     ? parseFloat(row[latCol])  : NaN;
-    const lon     = lonCol >= 0     ? parseFloat(row[lonCol])  : NaN;
+    const name    = nameCol >= 0    ? row[nameCol]    : '—';
+    const id      = idCol >= 0      ? row[idCol]      : '—';
+    const country = countryCol >= 0 ? row[countryCol] : '—';
+    const basin   = basinCol >= 0   ? row[basinCol]   : '—';
+    const region  = regionCol >= 0  ? row[regionCol]  : '—';
+    const calib   = calibCol >= 0   ? row[calibCol]   : '';
+    const lat     = latCol >= 0     ? parseFloat(row[latCol])   : NaN;
+    const lon     = lonCol >= 0     ? parseFloat(row[lonCol])   : NaN;
+    const isCalib = calib.toLowerCase() === 'calibrated';
 
     const tr = document.createElement('tr');
     const cell = (text, className) => {
@@ -387,9 +402,17 @@ function renderRows(rows, append = false) {
     cell(id,     'cell-muted');
     cell(name,   'station-name');
     cell(basin,  'cell-basin');
+    cell(region, 'cell-muted');
     cell(country,'cell-muted');
     cell(isNaN(lat) ? '—' : lat.toFixed(3), 'cell-muted');
     cell(isNaN(lon) ? '—' : lon.toFixed(3), 'cell-muted');
+
+    // Calibration status badge
+    const tdCalib = document.createElement('td');
+    tdCalib.innerHTML = isCalib
+      ? `<span style="color:#22c55e;font-size:11px;">✓ calibrated</span>`
+      : `<span style="color:#64748b;font-size:11px;">${calib || '—'}</span>`;
+    tr.appendChild(tdCalib);
 
     // KGE chip
     const tdKge = document.createElement('td');
@@ -427,17 +450,17 @@ function applyFilters() {
   });
 
   filtered.sort((a, b) => {
-    const av = kgeCol >= 0 ? parseFloat(a[kgeCol]) : NaN;
-    const bv = kgeCol >= 0 ? parseFloat(b[kgeCol]) : NaN;
+    const av = kgeCol >= 0     ? parseFloat(a[kgeCol])  : NaN;
+    const bv = kgeCol >= 0     ? parseFloat(b[kgeCol])  : NaN;
     const an = nameCol >= 0    ? a[nameCol]    : '';
     const bn = nameCol >= 0    ? b[nameCol]    : '';
     const ac = countryCol >= 0 ? a[countryCol] : '';
     const bc = countryCol >= 0 ? b[countryCol] : '';
     switch (sortKey) {
-      case 'kge_desc':     return (isNaN(bv) ? -Infinity : bv) - (isNaN(av) ? -Infinity : av);
-      case 'kge_asc':      return (isNaN(av) ?  Infinity : av) - (isNaN(bv) ?  Infinity : bv);
-      case 'name_asc':     return an.localeCompare(bn);
-      case 'country_asc':  return ac.localeCompare(bc);
+      case 'kge_desc':    return (isNaN(bv) ? -Infinity : bv) - (isNaN(av) ? -Infinity : av);
+      case 'kge_asc':     return (isNaN(av) ?  Infinity : av) - (isNaN(bv) ?  Infinity : bv);
+      case 'name_asc':    return an.localeCompare(bn);
+      case 'country_asc': return ac.localeCompare(bc);
       default: return 0;
     }
   });
@@ -476,8 +499,8 @@ function updateStats(rows) {
     else if (v >= 0.5) good++;
     else poor++;
   });
-  document.getElementById('statTotal').textContent = rows.length.toLocaleString();
-  document.getElementById('statCalib').textContent = (excellent + good + poor).toLocaleString();
+  document.getElementById('statTotal').textContent     = rows.length.toLocaleString();
+  document.getElementById('statCalib').textContent     = (excellent + good + poor).toLocaleString();
   document.getElementById('statExcellent').textContent = excellent.toLocaleString();
   document.getElementById('statGood').textContent      = good.toLocaleString();
   document.getElementById('statPoor').textContent      = poor.toLocaleString();
