@@ -6,7 +6,7 @@ An interactive page to browse through the results can be found [here](https://fu
 The main map below shows the **global performance of the model** using the `modKGE` metric.
 The calibration used >5,000 stations globally.
 
-![Global ModKGE Map](images/map_modKGE_v5_global.jpg)
+![Global ModKGE Map](Images/map_modKGE_v5_global.jpg)
 
 ---
 
