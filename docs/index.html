@@ -233,7 +233,7 @@
 </div>
 
 <script>
-const CSV_URL = 'https://raw.githubusercontent.com/fuchsiger/GloFASv5_Results/refs/heads/main/GloFASv5_stations_metadata_calfunction_KGE_JSD_20March2026_final.csv';
+const CSV_URL = 'https://raw.githubusercontent.com/fuchsiger/GloFASv5_Results/refs/heads/main/glofas5_hydrobot.csv';
 const PAGE_SIZE = 200;
 
 let allRows = [];
@@ -289,7 +289,7 @@ function detectCols(hdrs) {
   idCol      = exact('ID');
   countryCol = exact('iso');
   latCol     = exact('lat');
-  lonCol     = exact('long');
+  lonCol     = exact('lon');
   basinCol   = exact('basin');
   regionCol  = exact('Region');
   calibCol   = exact('GlofasV5');
@@ -500,7 +500,7 @@ function updateStats(rows) {
     else poor++;
   });
   document.getElementById('statTotal').textContent     = rows.length.toLocaleString();
-  document.getElementById('statCalib').textContent     = (excellent + good + poor).toLocaleString();
+  document.getElementById('statCalib').textContent     = rows.length.toLocaleString();
   document.getElementById('statExcellent').textContent = excellent.toLocaleString();
   document.getElementById('statGood').textContent      = good.toLocaleString();
   document.getElementById('statPoor').textContent      = poor.toLocaleString();
