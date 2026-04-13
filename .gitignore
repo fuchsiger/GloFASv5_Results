@@ -12,8 +12,8 @@ GloFASv5_catchments_comprehensive.csv
 GloFASv5_catchments_glaciers_comprehensive.csv
 GloFASv5_catchments_parameters_comprehensive.csv
 GloFASv5_stations_metadata_23Feb2026.csv
-merge_calib_results*
-merge_all_*
+merge_calib_results*.ipynb
+merge_all_*.ipynb
 
 # Ignore a folder and everything inside it (subfolders included)
 .env
