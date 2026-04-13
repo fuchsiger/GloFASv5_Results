@@ -4,12 +4,16 @@ GloFASv5_Calibration_Results.geojson
 GloFASv5_Calibration_Results_with_attr.csv
 GloFASv5_Calibration_Results_with_attr.geojson
 GloFASv5_stations_metadata_calfunction_KGE_JSD_20March2026_final.csv
+GloFASv5_stations_metadata_calfunction_KGE_JSD_20March2026_final.geojson
 GloFASv5_Calibration_Results_updated.geojson
+GloFASv5_Calibration_Results_updated.csv
 GloFASv5_catchments_clim_comprehensive.csv
 GloFASv5_catchments_comprehensive.csv
 GloFASv5_catchments_glaciers_comprehensive.csv
 GloFASv5_catchments_parameters_comprehensive.csv
 GloFASv5_stations_metadata_23Feb2026.csv
+merge_calib_results*
+merge_all_*
 
 # Ignore a folder and everything inside it (subfolders included)
 .env
