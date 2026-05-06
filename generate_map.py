@@ -4,10 +4,7 @@ generate_map.py
 Generates map.html (Leaflet.js station map) from glofas5_hydrobot.csv.
 
 Usage:
-    python generate_map.py --csv glofas5_hydrobot.csv --out map.html
-
-The script reads the CSV (locally or via URL) and regenerates the full
-map.html with one circleMarker per station, color-coded by KGEmod.
+    python generate_map.py --csv glofas5_hydrobot.csv --out docs/map.html
 """
 
 import argparse
@@ -17,15 +14,14 @@ import pandas as pd
 # ── KGE colour scheme (matches index.html) ───────────────────────────────────
 def kge_colors(v):
     if v is None or (isinstance(v, float) and math.isnan(v)):
-        return '#dc2626', '#ef4444'          # bad
-    if v >= 0.75: return '#16a34a', '#22c55e'   # excellent
-    if v >= 0.50: return '#65a30d', '#84cc16'   # good
-    if v >= 0.25: return '#ca8a04', '#eab308'   # fair
-    if v >= 0.00: return '#ea580c', '#f97316'   # poor
-    return '#dc2626', '#ef4444'                  # bad
+        return '#dc2626', '#ef4444'
+    if v >= 0.75: return '#16a34a', '#22c55e'
+    if v >= 0.50: return '#65a30d', '#84cc16'
+    if v >= 0.25: return '#ca8a04', '#eab308'
+    if v >= 0.00: return '#ea580c', '#f97316'
+    return '#dc2626', '#ef4444'
 
 def esc(s):
-    """Escape single quotes for inline JS strings."""
     return str(s).replace("'", "\\'")
 
 def fmt(v, decimals=4):
@@ -53,7 +49,15 @@ def build_popup(row):
             f"</tr>"
         )
 
+    def section(title):
+        return (
+            f"<tr><td colspan='2' style='padding:6px 0 2px 0;font-size:11px;"
+            f"color:#475569;text-transform:uppercase;letter-spacing:0.5px;"
+            f"border-top:1px solid #1e2535'>{title}</td></tr>"
+        )
+
     rows_html = ''.join([
+        # ── Identity ──────────────────────────────────────────────────
         tr('Station',       esc(row.get('name',   '—'))),
         tr('ID',            esc(row.get('ID',     '—'))),
         tr('Basin',         esc(row.get('basin',  '—'))),
@@ -61,18 +65,34 @@ def build_popup(row):
         tr('Region',        esc(row.get('Region', '—'))),
         tr('Country (ISO)', esc(row.get('iso',    '—'))),
         tr('Status',        esc(row.get('GlofasV5', '—'))),
+        # ── Performance ───────────────────────────────────────────────
+        section('Performance'),
         tr('KGEmod',        f"<b style='color:{fill}'>{kge_str}</b>"),
         tr('JSD',           fmt(row.get('JSD', '—'), 7)),
         tr('Function',      esc(row.get('Function', '—'))),
+        # ── Catchment ─────────────────────────────────────────────────
+        section('Catchment'),
         tr('Drainage Area (prov km²)', fmt(row.get('DrainageArea_prov', '—'), 2)),
         tr('Drainage Area (LDD km²)',  fmt(row.get('DrainageArea_LDD',  '—'), 2)),
         tr('Elevation mean (m)',       fmt(row.get('elv_mean', '—'), 1)),
+        tr('Forest frac',              fmt(row.get('fracforest_mean', '—'), 3)),
+        tr('Glacier frac',             fmt(row.get('glacier_frac', '—'), 4)),
+        # ── Climate ───────────────────────────────────────────────────
+        section('Climate'),
         tr('TP annual (mm/yr)',        fmt(row.get('tp_mean_annual', '—'), 1)),
         tr('ET0 annual (mm/yr)',       fmt(row.get('eT0_mean_annual', '—'), 1)),
         tr('Aridity Index',            fmt(row.get('aridity_index', '—'), 3)),
-        tr('Temp mean (°C)',            fmt(row.get('ta_mean', '—'), 2)),
-        tr('Forest frac',              fmt(row.get('fracforest_mean', '—'), 3)),
-        tr('Glacier frac',             fmt(row.get('glacier_frac', '—'), 4)),
+        tr('Temp mean (°C)',           fmt(row.get('ta_mean', '—'), 2)),
+        # ── Water Balance ─────────────────────────────────────────────
+        section('Water Balance (mean annual)'),
+        tr('Q (mm/yr)',                fmt(row.get('q_mean_annual', '—'), 1)),
+        tr('ETa (mm/yr)',              fmt(row.get('eta_mean_annual', '—'), 1)),
+        tr('SWE (mm)',                 fmt(row.get('swe_mean_annual', '—'), 1)),
+        tr('Soil moisture θ (mm)',     fmt(row.get('theta_mean_annual', '—'), 1)),
+        tr('Upper zone UZ (mm)',       fmt(row.get('uz_mean_annual', '—'), 1)),
+        tr('Lower zone LZ (mm)',       fmt(row.get('lz_mean_annual', '—'), 1)),
+        # ── Observations ──────────────────────────────────────────────
+        section('Observations'),
         tr('Obs Start',     esc(row.get('Obs_start', '—'))),
         tr('Obs End',       esc(row.get('Obs_end',   '—'))),
     ])
@@ -211,7 +231,6 @@ def generate_map(csv_path, out_path):
     df = pd.read_csv(csv_path)
     print(f"   {len(df)} stations loaded")
 
-    # Stats
     def kge_class(v):
         try:
             v = float(v)
@@ -230,7 +249,6 @@ def generate_map(csv_path, out_path):
 
     print("📊 Stats:", counts)
 
-    # Build markers
     marker_lines = []
     skipped = 0
     for _, row in df.iterrows():
@@ -250,16 +268,13 @@ def generate_map(csv_path, out_path):
             kge = float('nan')
 
         border, fill = kge_colors(kge)
-        kge_str = f'{kge:.3f}' if not math.isnan(kge) else '—'
         popup = build_popup(row)
-        station_id = esc(row.get('ID',   '—'))
-        name       = esc(row.get('name', '—'))
 
         line = (
             f"    L.circleMarker([{lat},{lon}],"
             f"{{radius:6,color:'{border}',fillColor:'{fill}',fillOpacity:0.85,weight:1.5}})"
             f".bindPopup('{popup}',"
-            f"{{maxWidth:420,maxHeight:400}})"
+            f"{{maxWidth:440,maxHeight:480}})"
             f".addTo(map);"
         )
         marker_lines.append(line)

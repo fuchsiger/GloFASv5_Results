@@ -192,7 +192,7 @@
 <div class="controls">
   <div class="search-wrap">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="text" id="searchInput" placeholder="Search station, basin, country…">
+    <input type="text" id="searchInput" placeholder="Search ID, station, basin, country…">
   </div>
   <span class="filter-label">KGE Filter</span>
   <select id="kgeFilter">
@@ -207,6 +207,8 @@
   <select id="sortSelect">
     <option value="kge_desc">KGE ↓</option>
     <option value="kge_asc">KGE ↑</option>
+    <option value="id_asc">ID ↑</option>
+    <option value="id_desc">ID ↓</option>
     <option value="name_asc">Name A–Z</option>
     <option value="country_asc">Country</option>
   </select>
@@ -245,6 +247,7 @@ let loading = false;
 // Column indices
 let kgeCol = -1, nameCol = -1, idCol = -1, countryCol = -1;
 let latCol = -1, lonCol = -1, basinCol = -1, regionCol = -1, calibCol = -1;
+let riverCol = -1;
 let headers = [];
 
 // ── CSV/TSV parser (auto-detects delimiter) ──────────────────────────
@@ -293,16 +296,25 @@ function detectCols(hdrs) {
   basinCol   = exact('basin');
   regionCol  = exact('Region');
   calibCol   = exact('GlofasV5');
+  riverCol   = exact('river');
 
   if (kgeCol < 0)     kgeCol     = fuzzy(['kgemod', 'kge']);
   if (nameCol < 0)    nameCol    = fuzzy(['name', 'station']);
   if (idCol < 0)      idCol      = fuzzy(['id']);
   if (countryCol < 0) countryCol = fuzzy(['iso', 'country']);
   if (latCol < 0)     latCol     = fuzzy(['lat']);
-  if (lonCol < 0)     lonCol     = fuzzy(['long', 'lon']);
+  if (lonCol < 0)     lonCol     = fuzzy(['lon']);
   if (basinCol < 0)   basinCol   = fuzzy(['basin']);
   if (regionCol < 0)  regionCol  = fuzzy(['region']);
   if (calibCol < 0)   calibCol   = fuzzy(['glofasv5', 'glofas']);
+  if (riverCol < 0)   riverCol   = fuzzy(['river']);
+}
+
+// ── Search: only match against meaningful text columns ───────────────
+function rowMatchesQuery(row, q) {
+  if (!q) return true;
+  const cols = [idCol, nameCol, basinCol, riverCol, countryCol, regionCol, calibCol];
+  return cols.some(ci => ci >= 0 && row[ci] && row[ci].toLowerCase().includes(q));
 }
 
 // ── KGE classification ───────────────────────────────────────────────
@@ -359,6 +371,8 @@ function buildHeader() {
       th.innerHTML = `${c.label} <span class="sort-icon">↕</span>`;
       th.addEventListener('click', () => {
         sortKey = (sortKey === `${c.key}_desc`) ? `${c.key}_asc` : `${c.key}_desc`;
+        // sync dropdown to reflect header-click sort
+        document.getElementById('sortSelect').value = sortKey;
         applyFilters();
       });
     } else {
@@ -407,19 +421,16 @@ function renderRows(rows, append = false) {
     cell(isNaN(lat) ? '—' : lat.toFixed(3), 'cell-muted');
     cell(isNaN(lon) ? '—' : lon.toFixed(3), 'cell-muted');
 
-    // Calibration status badge
     const tdCalib = document.createElement('td');
     tdCalib.innerHTML = isCalib
       ? `<span style="color:#22c55e;font-size:11px;">✓ calibrated</span>`
       : `<span style="color:#64748b;font-size:11px;">${calib || '—'}</span>`;
     tr.appendChild(tdCalib);
 
-    // KGE chip
     const tdKge = document.createElement('td');
     tdKge.innerHTML = `<span class="kge-chip ${cls}">${isNaN(kgeVal) ? '—' : kgeVal.toFixed(3)}</span>`;
     tr.appendChild(tdKge);
 
-    // Sparkline
     const tdSpark = document.createElement('td');
     tdSpark.className = 'sparkline-cell';
     const canvas = document.createElement('canvas');
@@ -441,7 +452,8 @@ function applyFilters() {
   sortKey    = document.getElementById('sortSelect').value;
 
   filtered = allRows.filter(row => {
-    if (q && !row.join(' ').toLowerCase().includes(q)) return false;
+    // Search only against meaningful text columns (not numeric fields)
+    if (q && !rowMatchesQuery(row, q)) return false;
     if (kgeF !== 'all') {
       const v = kgeCol >= 0 ? parseFloat(row[kgeCol]) : NaN;
       if (kgeClass(v) !== kgeF) return false;
@@ -456,14 +468,30 @@ function applyFilters() {
     const bn = nameCol >= 0    ? b[nameCol]    : '';
     const ac = countryCol >= 0 ? a[countryCol] : '';
     const bc = countryCol >= 0 ? b[countryCol] : '';
+    // ID sort: numeric comparison so 999 < 1000 (not lexicographic)
+    const ai = idCol >= 0 ? parseInt(a[idCol], 10) : 0;
+    const bi = idCol >= 0 ? parseInt(b[idCol], 10) : 0;
     switch (sortKey) {
       case 'kge_desc':    return (isNaN(bv) ? -Infinity : bv) - (isNaN(av) ? -Infinity : av);
       case 'kge_asc':     return (isNaN(av) ?  Infinity : av) - (isNaN(bv) ?  Infinity : bv);
+      case 'id_asc':      return ai - bi;
+      case 'id_desc':     return bi - ai;
       case 'name_asc':    return an.localeCompare(bn);
       case 'country_asc': return ac.localeCompare(bc);
       default: return 0;
     }
   });
+
+  // Highlight sorted column header
+  document.querySelectorAll('thead th').forEach(th => th.classList.remove('sorted'));
+  const keyToLabel = { kge: 'KGEmod', id: 'ID', name: 'Station', country: 'ISO' };
+  const baseKey = sortKey.replace(/_asc|_desc$/, '');
+  const label = keyToLabel[baseKey];
+  if (label) {
+    document.querySelectorAll('thead th').forEach(th => {
+      if (th.textContent.trim().startsWith(label)) th.classList.add('sorted');
+    });
+  }
 
   currentPage = 0;
   document.getElementById('shownCount').textContent = Math.min(PAGE_SIZE, filtered.length);
