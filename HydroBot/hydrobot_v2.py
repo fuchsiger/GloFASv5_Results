@@ -97,9 +97,9 @@ WATER BALANCE (mean annual, LISFLOOD simulated):
     gwloss_seasonality: groundwater loss seasonality
     lz_mean_annual:     lower groundwater zone storage (mm)
     uz_mean_annual:     upper groundwater zone storage (mm)
-    theta_mean_annual:  soil moisture layer 1 (mm)
-    theta2_mean_annual: soil moisture layer 2 (mm)
-    theta3_mean_annual: soil moisture layer 3 (mm)
+    theta_mean_annual:  soil moisture layer 1 (mm3/mm3)
+    theta2_mean_annual: soil moisture layer 2 (mm3/mm3)
+    theta3_mean_annual: soil moisture layer 3 (mm3/mm3)
 
 CALIBRATION PARAMETERS (param_*) -- NaN = station not calibrated:
     param_CalChanMan1, param_CalChanMan3: channel Manning roughness

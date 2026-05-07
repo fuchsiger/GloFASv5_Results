@@ -88,7 +88,7 @@ def build_popup(row):
         tr('Q (mm/yr)',                fmt(row.get('q_mean_annual', '—'), 1)),
         tr('ETa (mm/yr)',              fmt(row.get('eta_mean_annual', '—'), 1)),
         tr('SWE (mm)',                 fmt(row.get('swe_mean_annual', '—'), 1)),
-        tr('Soil moisture θ (mm)',     fmt(row.get('theta_mean_annual', '—'), 1)),
+        tr('Soil moisture θ (mm3/mm3)',fmt(row.get('theta_mean_annual', '—'), 1)),
         tr('Upper zone UZ (mm)',       fmt(row.get('uz_mean_annual', '—'), 1)),
         tr('Lower zone LZ (mm)',       fmt(row.get('lz_mean_annual', '—'), 1)),
         # ── Observations ──────────────────────────────────────────────
