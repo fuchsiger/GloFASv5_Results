@@ -85,7 +85,7 @@ def build_popup(row):
         tr('Temp mean (°C)',           fmt(row.get('ta_mean', '—'), 2)),
         # ── Water Balance ─────────────────────────────────────────────
         section('Water Balance (mean annual)'),
-        tr('Q (mm/yr)',                fmt(row.get('q_mean_annual', '—'), 1)),
+        tr('Q mean annual (m³/s)',     fmt(row.get('q_mean_annual', '—'), 2)),
         tr('ETa (mm/yr)',              fmt(row.get('eta_mean_annual', '—'), 1)),
         tr('SWE (mm)',                 fmt(row.get('swe_mean_annual', '—'), 1)),
         tr('Soil moisture θ (mm3/mm3)',fmt(row.get('theta_mean_annual', '—'), 1)),

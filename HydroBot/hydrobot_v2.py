@@ -76,7 +76,7 @@ CLIMATE (catchment-averaged, ERA5-based):
     Aridity:            aridity_index (ET0/P ratio; >1 = arid, <1 = humid)
 
 WATER BALANCE (mean annual, LISFLOOD simulated):
-    q_mean_annual:      total discharge (mm/yr)
+    q_mean_annual:      mean annual discharge (m³/s)
     eta_mean_annual:    actual evapotranspiration (mm/yr)
     et0_mean_annual:    reference ET0 from LISVAP output (mm/yr) [lowercase, distinct from eT0_mean_annual]
     et0_seasonality:    ET0 seasonality index (LISVAP output)
