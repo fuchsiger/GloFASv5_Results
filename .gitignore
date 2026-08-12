@@ -18,7 +18,9 @@ merge_calib_results*.ipynb
 merge_all_*.ipynb
 missing_tss_folders.csv
 /home/schafti/Documents/01_Hydrology/01_Lisflood/02_Data/03_GloFASv5/01_HydroBot/gr4j/inputs/
-
+/results/merged_tss/
+missing_tss_folders.csv
+negative_lz_stations.csv
 # Ignore a folder and everything inside it (subfolders included)
 .env
 fly.toml
