@@ -197,9 +197,9 @@ HTML_HEAD = """\
     preferCanvas: true
   });
 
-  L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-    attribution: '© Stadia Maps © OpenMapTiles © OpenStreetMap',
-    maxZoom: 20
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+    attribution: '© Esri © OpenStreetMap',
+    maxZoom: 16
   }).addTo(map);
 """
 
